@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
-import heroImage from '@/assets/authority-hero.jpg';
+import heroImage from '@/assets/professional-authority-bg.jpg';
 
 export const Login = () => {
   const { user, login, isLoading, useMockMode } = useAuth();
@@ -51,7 +51,7 @@ export const Login = () => {
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: `url(${heroImage})` }}
       >
-        <div className="absolute inset-0 bg-gradient-hero/90"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background/60 to-secondary/20"></div>
       </div>
       
       <div className="relative z-10 min-h-screen flex items-center justify-center p-4">

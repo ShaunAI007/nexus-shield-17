@@ -13,6 +13,7 @@ import {
   Activity,
   ChevronLeft,
   ChevronRight,
+  UserCheck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth, hasPermission } from '@/contexts/AuthContext';
@@ -34,6 +35,12 @@ const navigationItems: NavItem[] = [
     href: '/dashboard',
     icon: BarChart3,
     permission: 'dashboard.view',
+  },
+  {
+    title: 'Tourist Management',
+    href: '/tourist-dashboard',
+    icon: UserCheck,
+    permission: 'tourists.manage',
   },
   {
     title: 'Incidents',

@@ -15,6 +15,7 @@ import { Zones } from "@/pages/Zones";
 import { Users } from "@/pages/Users";
 import { AuditLogs } from "@/pages/AuditLogs";
 import { Settings } from "@/pages/Settings";
+import { TouristDashboard } from "@/pages/TouristDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -92,6 +93,7 @@ const App = () => (
               }
             >
               <Route path="dashboard" element={<Dashboard />} />
+              <Route path="tourist-dashboard" element={<TouristDashboard />} />
               <Route path="incidents" element={<Incidents />} />
               <Route path="incidents/:id" element={<div className="p-6">Incident Detail Page - Coming Soon</div>} />
               <Route path="heatmap" element={<Heatmap />} />

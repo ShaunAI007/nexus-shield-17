@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Slider } from '@/components/ui/slider';
 import { mockDataService } from '@/services/mockDataService';
 import { toast } from '@/hooks/use-toast';
+import { MapboxMap } from '@/components/MapboxMap';
 
 interface HeatmapZone {
   id: string;
@@ -163,9 +164,9 @@ export const Heatmap = () => {
         </div>
       </div>
 
-      {/* Map Placeholder and Zone Details */}
+      {/* Map Visualization and Zone Details */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Map Area */}
+        {/* Interactive Map Area */}
         <div className="lg:col-span-2">
           <Card>
             <CardHeader>
@@ -177,34 +178,44 @@ export const Heatmap = () => {
                 Interactive map showing risk zones ({filteredZones.length} zones displayed)
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="h-96 bg-muted/50 rounded-lg flex items-center justify-center relative overflow-hidden">
-                {/* Simulated Map Grid */}
-                <div className="absolute inset-4 grid grid-cols-4 gap-2">
-                  {filteredZones.slice(0, 16).map((zone, index) => (
-                    <div
-                      key={zone.id}
-                      className={`rounded cursor-pointer transition-all hover:scale-105 border-2 ${getRiskColor(zone.riskLevel)}`}
-                      onClick={() => handleZoneClick(zone)}
-                      title={`${zone.id} - ${zone.riskLevel} risk`}
-                    >
-                      <div className="p-2 text-center">
-                        <div className="text-xs font-medium">{zone.incidentCount}</div>
-                        <div className="text-xs opacity-75">incidents</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+            <CardContent className="p-0">
+              <div className="relative">
+                {/* Mapbox Integration */}
+                <MapboxMap
+                  zones={filteredZones}
+                  onZoneClick={handleZoneClick}
+                  className="h-96 rounded-lg"
+                />
                 
-                <div className="text-center text-muted-foreground">
-                  <MapPin className="h-12 w-12 mx-auto mb-2 opacity-50" />
-                  <p>Interactive Risk Heatmap</p>
-                  <p className="text-sm">Click on zones to view details</p>
+                {/* Fallback Grid Map (shown when Mapbox is not initialized) */}
+                <div className="h-96 bg-muted/50 rounded-lg flex items-center justify-center relative overflow-hidden lg:hidden">
+                  {/* Simulated Map Grid */}
+                  <div className="absolute inset-4 grid grid-cols-4 gap-2">
+                    {filteredZones.slice(0, 16).map((zone, index) => (
+                      <div
+                        key={zone.id}
+                        className={`rounded cursor-pointer transition-all hover:scale-105 border-2 ${getRiskColor(zone.riskLevel)}`}
+                        onClick={() => handleZoneClick(zone)}
+                        title={`${zone.id} - ${zone.riskLevel} risk`}
+                      >
+                        <div className="p-2 text-center">
+                          <div className="text-xs font-medium">{zone.incidentCount}</div>
+                          <div className="text-xs opacity-75">incidents</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="text-center text-muted-foreground">
+                    <MapPin className="h-12 w-12 mx-auto mb-2 opacity-50" />
+                    <p>Interactive Risk Heatmap</p>
+                    <p className="text-sm">Click on zones to view details</p>
+                  </div>
                 </div>
               </div>
 
               {/* Legend */}
-              <div className="flex justify-center gap-4 mt-4">
+              <div className="flex justify-center gap-4 mt-4 p-4">
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 bg-success rounded"></div>
                   <span className="text-xs">Low Risk</span>

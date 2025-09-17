@@ -29,8 +29,23 @@ export const Heatmap = () => {
     const loadHeatmapData = async () => {
       setLoading(true);
       try {
-        const data = await mockDataService.getHeatmapData();
-        setZones(data);
+        const response = await mockDataService.getHeatmapData();
+        if (response.success && response.data) {
+          // Convert the heatmap data to the expected format
+          const heatmapZones: HeatmapZone[] = response.data.zones ? response.data.zones.map((zone: any) => ({
+            id: zone.id || zone.name || `zone-${Math.random()}`,
+            polygon: zone.coordinates || zone.polygon || [],
+            riskLevel: zone.riskLevel || 'low',
+            incidentCount: zone.incidentCount || 0,
+            severity: zone.riskScore ? zone.riskScore / 10 : Math.random(),
+            lastUpdated: new Date().toISOString(),
+            riskFactors: ['Tourist activity', 'Crowd density', 'Security presence']
+          })) : [];
+          
+          setZones(heatmapZones);
+        } else {
+          throw new Error(response.error || 'Failed to load heatmap data');
+        }
       } catch (error) {
         console.error('Failed to load heatmap data:', error);
         toast({
@@ -38,6 +53,7 @@ export const Heatmap = () => {
           description: "Failed to load heatmap data",
           variant: "destructive",
         });
+        setZones([]); // Set empty array as fallback
       } finally {
         setLoading(false);
       }

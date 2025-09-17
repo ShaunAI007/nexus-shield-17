@@ -314,6 +314,75 @@ class MockDataService {
     }
   }
 
+  // Digital IDs API
+  async getDigitalIds(): Promise<any[]> {
+    try {
+      // Enhanced mock digital IDs data
+      const enhancedDigitalIds = this.mockData.tourists.map((tourist, index) => ({
+        ...tourist,
+        status: ['verified', 'pending', 'flagged'][Math.floor(Math.random() * 3)],
+        issueDate: tourist.issueDate.toISOString(),
+        expiryDate: tourist.expiryDate.toISOString(),
+        lastSeen: tourist.lastSeen.toISOString(),
+        location: ['Red Fort', 'India Gate', 'Connaught Place', 'Lodhi Gardens'][index % 4],
+        visaType: ['Tourist', 'Business', 'Transit'][Math.floor(Math.random() * 3)],
+        verificationCount: Math.floor(Math.random() * 20) + 1,
+        blockchainTx: `0x${Math.random().toString(16).substr(2, 40)}`,
+        flagReason: Math.random() > 0.7 ? 'Multiple failed verification attempts' : undefined,
+        pendingReason: Math.random() > 0.8 ? 'Awaiting document verification' : undefined,
+        itinerary: [
+          { location: 'Red Fort', date: '2024-01-16' },
+          { location: 'India Gate', date: '2024-01-17' },
+          { location: 'Qutub Minar', date: '2024-01-18' }
+        ]
+      }));
+
+      await this.delay(enhancedDigitalIds);
+      return enhancedDigitalIds;
+    } catch (error) {
+      console.error('Failed to fetch digital IDs:', error);
+      return [];
+    }
+  }
+
+  // Operator Calls API
+  async getOperatorCalls(): Promise<any[]> {
+    try {
+      const mockCalls = [
+        {
+          id: 'CALL-001',
+          type: 'emergency',
+          priority: 'high',
+          caller: 'DID-12345',
+          location: 'Connaught Place',
+          startTime: new Date(Date.now() - 5 * 60 * 1000),
+          duration: '00:05:23',
+          status: 'active',
+          assignedOperator: 'Maya Singh',
+          incidentId: 'INC-2024-001'
+        },
+        {
+          id: 'CALL-002',
+          type: 'assistance',
+          priority: 'medium',
+          caller: 'DID-67890',
+          location: 'Red Fort',
+          startTime: new Date(Date.now() - 15 * 60 * 1000),
+          duration: '00:03:45',
+          status: 'completed',
+          assignedOperator: 'Raj Kumar',
+          resolution: 'Provided directions to nearest metro station'
+        }
+      ];
+
+      await this.delay(mockCalls);
+      return mockCalls;
+    } catch (error) {
+      console.error('Failed to fetch operator calls:', error);
+      return [];
+    }
+  }
+
   // Audit Logs API
   async getAuditLogs(filters?: any): Promise<ApiResponse<any[]>> {
     try {

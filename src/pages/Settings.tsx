@@ -187,7 +187,10 @@ export const Settings = () => {
           <CardContent className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="theme">Theme</Label>
-              <Select value={theme} onValueChange={setTheme}>
+              <Select 
+                value={theme} 
+                onValueChange={(value: "light" | "dark" | "system") => setTheme(value)}
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
